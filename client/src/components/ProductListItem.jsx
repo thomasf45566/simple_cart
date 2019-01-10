@@ -32,7 +32,7 @@ class ConnectedProductListItem extends React.Component {
     return (
       <div>
         <h3>{name}</h3>
-        <p>Price: {price}</p>
+        <p>Price: ${price}</p>
         <p>Qty: {quantity}</p>
         <p>Description: {description}</p>
         <button onClick={() => this.clickHandler(this.props.index)}>Buy</button>

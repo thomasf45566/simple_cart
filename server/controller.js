@@ -1,19 +1,5 @@
 const { Products } = require('../database');
-const products = [
-  {
-    name: 'test1',
-    price: '$100',
-    quantity: 10,
-    description: 'test description',
-  },
-  {
-    name: 'test2',
-    price: '$200',
-    quantity: 20,
-    description: 'test2 description',
-  }
-];
-const cart = {};
+const { products, cart } = require('./seedData');
 
 const controller = {
   getProducts: (req, res) => {

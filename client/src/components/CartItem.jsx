@@ -15,17 +15,27 @@ const mapDispatchToProps = dispatch => {
 class ConnectedCartItem extends React.Component {
   constructor() {
     super();
+    this.state = {
+      qty: 1
+    }
     this.clickHandlerAdd = this.clickHandlerAdd.bind(this);
     this.clickHandlerReduce = this.clickHandlerReduce.bind(this);
-    this.clickHandlerChange = this.clickHandlerChange.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.clickHandlerRemove = this.clickHandlerRemove.bind(this);
+    this.handleInput = this.handleInput.bind(this);
+  }
+
+  componentDidMount() {
+    this.setState({ qty: this.props.qty });
   }
 
   clickHandlerAdd(itemID) {
     console.log('clicked', itemID);
+    this.setState({ qty: this.state.qty + 1 });
+    this.props.addItem(itemID);
     axios.put(`/api/cart/add/${itemID}`)
       .then(({ data }) => {
-        this.props.addItem(itemID);
+        console.log(data);
       })
       .catch((err) => {
         console.log(err);
@@ -34,20 +44,23 @@ class ConnectedCartItem extends React.Component {
   }
   clickHandlerReduce(itemID) {
     console.log('clicked', itemID);
+    this.setState({ qty: this.state.qty - 1 });
+    this.props.reduceItem(itemID);
     axios.put(`/api/cart/reduce/${itemID}`)
       .then(({ data }) => {
-        this.props.reduceItem(itemID);
+        console.log(data);
       })
       .catch((err) => {
         console.log(err);
         alert('Failed to connect to the server. Please try again later.');
       });
   }
-  clickHandlerChange(itemID, num) {
+  handleChange(itemID, num) {
     console.log('clicked', itemID);
-    axios.put(`/api/cart/change/${itemID}`)
+    this.props.changeItem(itemID, num);
+    axios.put(`/api/cart/change/${itemID}`, { num })
       .then(({ data }) => {
-        this.props.changeItem(itemID, num);
+        console.log(data);
       })
       .catch((err) => {
         console.log(err);
@@ -56,9 +69,10 @@ class ConnectedCartItem extends React.Component {
   }
   clickHandlerRemove(itemID) {
     console.log('clicked', itemID);
-    axios.put(`/api/cart/remove/${itemID}`)
+    this.props.removeItem(itemID);
+    axios.delete(`/api/cart/remove/${itemID}`)
       .then(({ data }) => {
-        this.props.removeItem(itemID);
+        console.log(data);
       })
       .catch((err) => {
         console.log(err);
@@ -66,16 +80,21 @@ class ConnectedCartItem extends React.Component {
       });
   }
 
+  handleInput(e) {
+    this.setState({ qty: e.target.value }, () => {
+      this.handleChange(this.props.itemID, this.state.qty || 0);
+    });
+  }
+
   render() {
     const itemID = this.props.itemID;
-    const qty = this.props.qty;
     const name = this.props.name;
     return (
       <div>
         <button onClick={() => this.clickHandlerRemove(itemID)}>x</button>
         {name}:
         <button onClick={() => this.clickHandlerReduce(itemID)}>-</button>
-        <input value={qty} />
+        <input onInput={this.handleInput} value={this.state.qty} size="5"/>
         <button onClick={() => this.clickHandlerAdd(itemID)}>+</button>
       </div>
     );

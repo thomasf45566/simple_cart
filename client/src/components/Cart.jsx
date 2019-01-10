@@ -17,6 +17,7 @@ const mapDispatchToProps = dispatch => {
 class ConnectedCart extends React.Component {
   constructor() {
     super();
+    this.getTotal = this.getTotal.bind(this);
   }
 
   componentDidMount() {
@@ -30,6 +31,12 @@ class ConnectedCart extends React.Component {
       });
   }
 
+  getTotal() {
+    return Object.keys(this.props.cart).reduce((total, itemID) => (
+      total + this.props.products[itemID].price * this.props.cart[itemID]
+    ), 0);
+  }
+
   render() {
     const cart = this.props.cart;
     return (
@@ -38,6 +45,10 @@ class ConnectedCart extends React.Component {
         {Object.keys(cart).map((itemID, index) => (
           <CartItem itemID={itemID} name={this.props.products[itemID].name} qty={cart[itemID]}  key={index} />
         ))}
+        <br></br>
+        <p>Total: ${this.getTotal()}</p>
+        <br></br>
+        <button>Checkout</button>
       </div>
     );
   }
