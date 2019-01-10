@@ -1,1 +1,1 @@
-module.exports = { Story: null };
+module.exports = { Products: null };
