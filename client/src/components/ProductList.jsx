@@ -35,7 +35,10 @@ class ConnectedProductList extends React.Component {
       <div>
         <h1>Our Products</h1>
         {this.props.products.map((product, index) => (
-          <ProductListItem product={product} index={index} key={index}/>
+          <div>
+            <ProductListItem product={product} index={index} key={index.toString()}/>
+            <br></br>
+          </div>
         ))}
       </div>
     );

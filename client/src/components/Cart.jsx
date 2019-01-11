@@ -1,5 +1,6 @@
 import React from 'react';
 import CartItem from './CartItem';
+import Checkout from './Checkout';
 import axios from 'axios';
 import { connect } from "react-redux";
 import { loadList } from '../actions';
@@ -17,13 +18,17 @@ const mapDispatchToProps = dispatch => {
 class ConnectedCart extends React.Component {
   constructor() {
     super();
-    this.getTotal = this.getTotal.bind(this);
+    this.state = {
+      total: 0
+    }
+    this.setTotal = this.setTotal.bind(this);
   }
 
   componentDidMount() {
     axios.get('/api/cart')
       .then(({ data }) => {
         this.props.loadList({ cart: data });
+        this.setTotal();
       })
       .catch((err) => {
         console.log(err);
@@ -31,24 +36,24 @@ class ConnectedCart extends React.Component {
       });
   }
 
-  getTotal() {
-    return Object.keys(this.props.cart).reduce((total, itemID) => (
+  setTotal() {
+    let total = Object.keys(this.props.cart).reduce((total, itemID) => (
       total + this.props.products[itemID].price * this.props.cart[itemID]
     ), 0);
+    this.setState({ total: total });
   }
 
   render() {
     const cart = this.props.cart;
+    const products = this.props.products;
     return (
       <div>
         <h1>Your Cart</h1>
         {Object.keys(cart).map((itemID, index) => (
-          <CartItem itemID={itemID} name={this.props.products[itemID].name} qty={cart[itemID]}  key={index} />
+          <CartItem itemID={itemID} name={products[itemID].name} qty={cart[itemID]} setTotal={this.setTotal} key={index.toString()} />
         ))}
         <br></br>
-        <p>Total: ${this.getTotal()}</p>
-        <br></br>
-        <button>Checkout</button>
+        <Checkout total={this.state.total} />
       </div>
     );
   }

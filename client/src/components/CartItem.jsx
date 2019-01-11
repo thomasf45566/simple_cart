@@ -33,6 +33,7 @@ class ConnectedCartItem extends React.Component {
     console.log('clicked', itemID);
     this.setState({ qty: this.state.qty + 1 });
     this.props.addItem(itemID);
+    this.props.setTotal();
     axios.put(`/api/cart/add/${itemID}`)
       .then(({ data }) => {
         console.log(data);
@@ -46,6 +47,7 @@ class ConnectedCartItem extends React.Component {
     console.log('clicked', itemID);
     this.setState({ qty: this.state.qty - 1 });
     this.props.reduceItem(itemID);
+    this.props.setTotal();
     axios.put(`/api/cart/reduce/${itemID}`)
       .then(({ data }) => {
         console.log(data);
@@ -58,6 +60,7 @@ class ConnectedCartItem extends React.Component {
   handleChange(itemID, num) {
     console.log('clicked', itemID);
     this.props.changeItem(itemID, num);
+    this.props.setTotal();
     axios.put(`/api/cart/change/${itemID}`, { num })
       .then(({ data }) => {
         console.log(data);
@@ -70,6 +73,7 @@ class ConnectedCartItem extends React.Component {
   clickHandlerRemove(itemID) {
     console.log('clicked', itemID);
     this.props.removeItem(itemID);
+    this.props.setTotal();
     axios.delete(`/api/cart/remove/${itemID}`)
       .then(({ data }) => {
         console.log(data);
