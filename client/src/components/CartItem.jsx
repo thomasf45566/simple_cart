@@ -86,7 +86,7 @@ class ConnectedCartItem extends React.Component {
 
   handleInput(e) {
     this.setState({ qty: e.target.value }, () => {
-      this.handleChange(this.props.itemID, this.state.qty || 0);
+      this.handleChange(this.props.itemID, +this.state.qty || 0);
     });
   }
 

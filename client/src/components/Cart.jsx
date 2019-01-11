@@ -49,6 +49,7 @@ class ConnectedCart extends React.Component {
     return (
       <div>
         <h1>Your Cart</h1>
+        {console.log(cart)}
         {Object.keys(cart).map((itemID, index) => (
           <CartItem itemID={itemID} name={products[itemID].name} qty={cart[itemID]} setTotal={this.setTotal} key={index.toString()} />
         ))}
