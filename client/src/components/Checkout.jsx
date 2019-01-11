@@ -5,6 +5,7 @@ const Checkout = ({ total }) => (
     Total: {total}
     <br></br>
     <button>Checkout</button>
+    {/* Checkout page has not been implemented yet */}
   </div>
 );
 

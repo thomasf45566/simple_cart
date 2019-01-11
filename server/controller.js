@@ -1,5 +1,11 @@
 const { Products } = require('../database');
 const { products, cart } = require('./seedData');
+/*
+  By storing the cart on the server:
+  1. it allows users to access their cart on any device
+  2. allows us to send notification to users reminding them to checkout
+  (Further implementation: Store carts in the DB based on user accounts)
+*/
 
 const controller = {
   getProducts: (req, res) => {

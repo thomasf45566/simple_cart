@@ -31,13 +31,6 @@ class ConnectedCart extends React.Component {
       });
   }
 
-  // setTotal() {
-  //   let total = Object.keys(this.props.cart).reduce((total, itemID) => (
-  //     total + this.props.products[itemID].price * this.props.cart[itemID]
-  //   ), 0);
-  //   this.setState({ total: total });
-  // }
-
   render() {
     const cart = this.props.cart;
     const products = this.props.products;
