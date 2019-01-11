@@ -9,12 +9,12 @@ const initialState = {
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_ITEM:
-      let newQuantity = state[action.payload] + 1 || 1;
+      let newQuantity = state.cart[action.payload] + 1 || 1;
       let newCart = { ...state.cart, [action.payload]: newQuantity };
       let newTotal = state.total + state.products[action.payload].price;
       return { ...state, cart: newCart, total: newTotal };
     case REDUCE_ITEM:
-      newQuantity = state[action.payload] - 1;
+      newQuantity = state.cart[action.payload] - 1;
       newCart = { ...state.cart };
       newTotal = state.total - state.products[action.payload].price;
       if (newQuantity <= 0) {
