@@ -16,9 +16,9 @@ class ConnectedProductListItem extends React.Component {
   }
 
   clickHandler(itemID) {
-    console.log('clicked', itemID);
     axios.put(`/api/cart/add/${itemID}`)
       .then(({ data }) => {
+        console.log(data);
         this.props.addItem(itemID);
       })
       .catch((err) => {

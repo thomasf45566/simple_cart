@@ -18,17 +18,12 @@ const mapDispatchToProps = dispatch => {
 class ConnectedCart extends React.Component {
   constructor() {
     super();
-    this.state = {
-      total: 0
-    }
-    this.setTotal = this.setTotal.bind(this);
   }
 
   componentDidMount() {
     axios.get('/api/cart')
       .then(({ data }) => {
         this.props.loadList({ cart: data });
-        this.setTotal();
       })
       .catch((err) => {
         console.log(err);
@@ -36,12 +31,12 @@ class ConnectedCart extends React.Component {
       });
   }
 
-  setTotal() {
-    let total = Object.keys(this.props.cart).reduce((total, itemID) => (
-      total + this.props.products[itemID].price * this.props.cart[itemID]
-    ), 0);
-    this.setState({ total: total });
-  }
+  // setTotal() {
+  //   let total = Object.keys(this.props.cart).reduce((total, itemID) => (
+  //     total + this.props.products[itemID].price * this.props.cart[itemID]
+  //   ), 0);
+  //   this.setState({ total: total });
+  // }
 
   render() {
     const cart = this.props.cart;
@@ -49,12 +44,11 @@ class ConnectedCart extends React.Component {
     return (
       <div>
         <h1>Your Cart</h1>
-        {console.log(cart)}
         {Object.keys(cart).map((itemID, index) => (
-          <CartItem itemID={itemID} name={products[itemID].name} qty={cart[itemID]} setTotal={this.setTotal} key={index.toString()} />
+          <CartItem itemID={itemID} name={products[itemID].name} qty={cart[itemID]} key={index.toString()} />
         ))}
         <br></br>
-        <Checkout total={this.state.total} />
+        <Checkout total={this.props.total} />
       </div>
     );
   }

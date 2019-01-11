@@ -30,13 +30,11 @@ class ConnectedCartItem extends React.Component {
   }
 
   clickHandlerAdd(itemID) {
-    console.log('clicked', itemID);
     this.setState({ qty: this.state.qty + 1 });
-    this.props.addItem(itemID);
-    this.props.setTotal();
     axios.put(`/api/cart/add/${itemID}`)
       .then(({ data }) => {
         console.log(data);
+        this.props.addItem(itemID);
       })
       .catch((err) => {
         console.log(err);
@@ -44,13 +42,11 @@ class ConnectedCartItem extends React.Component {
       });
   }
   clickHandlerReduce(itemID) {
-    console.log('clicked', itemID);
     this.setState({ qty: this.state.qty - 1 });
-    this.props.reduceItem(itemID);
-    this.props.setTotal();
     axios.put(`/api/cart/reduce/${itemID}`)
       .then(({ data }) => {
         console.log(data);
+        this.props.reduceItem(itemID);
       })
       .catch((err) => {
         console.log(err);
@@ -58,12 +54,10 @@ class ConnectedCartItem extends React.Component {
       });
   }
   handleChange(itemID, num) {
-    console.log('clicked', itemID);
-    this.props.changeItem(itemID, num);
-    this.props.setTotal();
     axios.put(`/api/cart/change/${itemID}`, { num })
       .then(({ data }) => {
         console.log(data);
+        this.props.changeItem(itemID, num);
       })
       .catch((err) => {
         console.log(err);
@@ -71,12 +65,10 @@ class ConnectedCartItem extends React.Component {
       });
   }
   clickHandlerRemove(itemID) {
-    console.log('clicked', itemID);
-    this.props.removeItem(itemID);
-    this.props.setTotal();
     axios.delete(`/api/cart/remove/${itemID}`)
       .then(({ data }) => {
         console.log(data);
+        this.props.removeItem(itemID);
       })
       .catch((err) => {
         console.log(err);
@@ -86,7 +78,9 @@ class ConnectedCartItem extends React.Component {
 
   handleInput(e) {
     this.setState({ qty: e.target.value }, () => {
-      this.handleChange(this.props.itemID, +this.state.qty || 0);
+      if (this.state.qty !== '') {
+        this.handleChange(this.props.itemID, +this.state.qty);
+      }
     });
   }
 
